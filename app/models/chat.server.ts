@@ -4,7 +4,18 @@ import { prisma } from "~/db.server";
 
 export function getChat({ id }: Pick<Chat, "id">) {
   return prisma.chat.findFirst({
-    select: { id: true, name: true },
+    select: {
+      id: true,
+      name: true,
+      messages: {
+        select: {
+          id: true,
+          body: true,
+          sentAt: true,
+        },
+        orderBy: { sentAt: "asc" },
+      },
+    },
     where: { id },
   });
 }
