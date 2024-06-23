@@ -36,3 +36,23 @@ model Note {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 }
+
+model Chat {
+  id String @id @default(cuid())
+  name String?
+
+  createdAt DateTime @default(now())
+
+  messages Message[]
+}
+
+model Message {
+  id String @id @default(cuid())
+  body String
+  sentByName String?
+
+  sentAt DateTime @default(now())
+
+  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  chatId String
+}
