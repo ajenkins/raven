@@ -6,8 +6,18 @@ interface MessageInputProps {
 
 export default function MessageInput({ formRef }: MessageInputProps) {
   return (
-    <Form method="post" ref={formRef}>
-      <div className="fixed bottom-0 left-0 w-full p-4 bg-white border-t border-gray-300 box-border">
+    <div className="fixed bottom-0 left-0 w-full p-4 bg-white border-t border-gray-300 box-border">
+      <Form method="delete">
+        <button
+          type="submit"
+          name="form"
+          value="resetUsername"
+          className="block mb-2 font-bold text-blue-600 hover:underline"
+        >
+          Edit Name
+        </button>
+      </Form>
+      <Form method="post" ref={formRef}>
         <div className="flex items-center">
           <input
             name="message"
@@ -23,7 +33,7 @@ export default function MessageInput({ formRef }: MessageInputProps) {
             Send
           </button>
         </div>
-      </div>
-    </Form>
+      </Form>
+    </div>
   );
 }
