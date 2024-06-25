@@ -84,7 +84,9 @@ export default function ChatPage() {
   const navigation = useNavigation();
   const isSending = navigation.state === "submitting";
   const formRef = useRef<HTMLFormElement>(null);
+  const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
 
+  // Add new messages received from SSE to allMessages
   useEffect(() => {
     if (newMessage) {
       const parsedNewMessage = JSON.parse(newMessage);
@@ -92,11 +94,17 @@ export default function ChatPage() {
     }
   }, [newMessage]);
 
+  // Clear message input after submit
   useEffect(() => {
     if (!isSending) {
       formRef.current?.reset();
     }
   }, [isSending]);
+
+  // Auto-scroll to the last message
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [allMessages]);
 
   return (
     <div className="flex flex-col h-screen">
@@ -111,6 +119,7 @@ export default function ChatPage() {
             return <OtherMessage key={message.id} message={message} />;
           }
         })}
+        <div ref={endOfMessagesRef}></div>
       </div>
       {username ? <MessageInput formRef={formRef} /> : <EditUsername />}
     </div>
