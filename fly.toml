@@ -49,3 +49,6 @@ script_checks = [ ]
   timeout = "2s"
   tls_skip_verify = false
   headers = { }
+
+[region]
+  primary = "bos"
