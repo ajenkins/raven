@@ -24,13 +24,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Index() {
   return (
-    <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
+    <main className="relative min-h-screen bg-gray-200 sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
+          <div className="bg-white relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
             <div className="relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32">
               <h1 className="text-center text-6xl mb-8 font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
-                <span className="block uppercase text-yellow-500 drop-shadow-md">
+                <span className="block uppercase text-violet-600 drop-shadow-md">
                   Raven
                 </span>
               </h1>
@@ -47,7 +47,7 @@ export default function Index() {
                   <div className="space-y-4 sm:mx-auto">
                     <button
                       type="submit"
-                      className="flex items-center justify-center rounded-md bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
+                      className="flex items-center justify-center rounded-md bg-violet-600 px-4 py-3 font-medium text-white hover:bg-yellow-600"
                     >
                       Start A New Chat
                     </button>
