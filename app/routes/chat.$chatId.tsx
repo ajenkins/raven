@@ -103,7 +103,7 @@ export default function ChatPage() {
       <div className="fixed top-0 left-0 w-full p-4 bg-white border-b border-gray-300 box-border">
         <h1 className="text-xl font-bold">{chat.name}</h1>
       </div>
-      <div className="flex-1 overflow-y-auto p-4 mt-16 mb-16">
+      <div className="flex-1 overflow-y-auto p-4 mt-14 mb-24">
         {allMessages.map((message) => {
           if (message.sentByName === username) {
             return <MyMessage key={message.id} message={message} />;
