@@ -82,32 +82,38 @@ export default function ChatPage() {
   }, [isSending]);
 
   return (
-    <div>
-      <h1 className="text-center text-4xl mt-4 mb-8 font-extrabold tracking-tight">
-        {chat.name}
-      </h1>
-      <h1 className="text-center text-4xl mt-4 mb-8 font-extrabold tracking-tight">
-        Username: {username}
-      </h1>
-      {allMessages.map((message) => (
-        <p key={message.id}>{message.body}</p>
-      ))}
+    <div className="flex flex-col h-screen">
+      <div className="fixed top-0 left-0 w-full p-4 bg-white border-b border-gray-300 box-border">
+        <h1 className="text-xl font-bold">{chat.name}</h1>
+      </div>
+      <div className="flex-1 overflow-y-auto p-4 mt-16 mb-16">
+        {allMessages.map((message) => (
+          <div
+            key={message.id}
+            className="message mb-2 p-2 border border-gray-200 rounded"
+          >
+            {message.body}
+          </div>
+        ))}
+      </div>
       {username ? (
         <Form method="post" ref={formRef}>
-          <div className="flex fixed items-center bottom-0 w-full p-4">
-            <input
-              name="message"
-              placeholder="Type something..."
-              className="border-black border-2 p-2 flex-1"
-            />
-            <button
-              type="submit"
-              name="form"
-              value="message"
-              className="flex items-center justify-center rounded-md ml-2 bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
-            >
-              Send
-            </button>
+          <div className="fixed bottom-0 left-0 w-full p-4 bg-white border-t border-gray-300 box-border">
+            <div className="flex items-center">
+              <input
+                name="message"
+                placeholder="Type something..."
+                className="border-black border-2 p-2 flex-1"
+              />
+              <button
+                type="submit"
+                name="form"
+                value="message"
+                className="flex items-center justify-center rounded-md ml-2 bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
+              >
+                Send
+              </button>
+            </div>
           </div>
         </Form>
       ) : (
