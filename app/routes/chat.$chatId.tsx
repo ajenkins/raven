@@ -40,7 +40,11 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       }
 
       invariant(params.chatId, "chatId not found");
-      const message = await sendMessage({ body, chatId: params.chatId });
+      const message = await sendMessage({
+        body,
+        chatId: params.chatId,
+        sentByName: cookie.username,
+      });
       emitter.emit("message", JSON.stringify(message));
 
       return json(null, { status: 201 });
@@ -87,14 +91,27 @@ export default function ChatPage() {
         <h1 className="text-xl font-bold">{chat.name}</h1>
       </div>
       <div className="flex-1 overflow-y-auto p-4 mt-16 mb-16">
-        {allMessages.map((message) => (
-          <div
-            key={message.id}
-            className="message mb-2 p-2 border border-gray-200 rounded"
-          >
-            {message.body}
-          </div>
-        ))}
+        {allMessages.map((message) =>
+          message.sentByName === username ? (
+            <div key={message.id} className="message mb-4 flex justify-end">
+              <div className="max-w-xs text-right">
+                <div className="text-sm text-gray-600">{username}</div>
+                <div className="bg-blue-500 text-white p-2 rounded-lg">
+                  <p>{message.body}</p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div key={message.id} className="message mb-4">
+              <div className="text-sm text-gray-600">
+                {message.sentByName ?? "Placeholder"}
+              </div>
+              <div className="bg-gray-200 p-2 rounded-lg max-w-xs">
+                <p>{message.body}</p>
+              </div>
+            </div>
+          ),
+        )}
       </div>
       {username ? (
         <Form method="post" ref={formRef}>

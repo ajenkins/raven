@@ -12,6 +12,7 @@ export function getChat({ id }: Pick<Chat, "id">) {
           id: true,
           body: true,
           sentAt: true,
+          sentByName: true,
         },
         orderBy: { sentAt: "asc" },
       },
