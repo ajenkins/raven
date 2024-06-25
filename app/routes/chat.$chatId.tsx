@@ -1,25 +1,31 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { useEventSource } from "remix-utils/sse/react";
 import invariant from "tiny-invariant";
 
+import { userSettings } from "~/cookies.server";
 import { emitter } from "~/emitter.server";
 import { getChat } from "~/models/chat.server";
 import { sendMessage } from "~/models/message.server";
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  invariant(params.chatId, "chatId not found");
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = (await userSettings.parse(cookieHeader)) || {};
 
+  invariant(params.chatId, "chatId not found");
   const chat = await getChat({ id: params.chatId });
   if (!chat) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ chat });
+  return json({ chat, username: cookie.username });
 };
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
+  const cookieHeader = request.headers.get("Cookie");
+  const cookie = (await userSettings.parse(cookieHeader)) || {};
+
   const formData = await request.formData();
   const form = formData.get("form");
   switch (form) {
@@ -41,15 +47,19 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     }
     case "username": {
       const username = formData.get("username");
-      console.log(username);
+      cookie.username = username;
 
-      return json(null, { status: 200 });
+      return redirect(request.url, {
+        headers: {
+          "Set-Cookie": await userSettings.serialize(cookie),
+        },
+      });
     }
   }
 };
 
 export default function ChatPage() {
-  const { chat } = useLoaderData<typeof loader>();
+  const { chat, username } = useLoaderData<typeof loader>();
   const newMessage = useEventSource("/chat/subscribe", {
     event: "message",
   });
@@ -57,8 +67,6 @@ export default function ChatPage() {
   const navigation = useNavigation();
   const isSending = navigation.state === "submitting";
   const formRef = useRef<HTMLFormElement>(null);
-
-  const username = "";
 
   useEffect(() => {
     if (newMessage) {
@@ -77,6 +85,9 @@ export default function ChatPage() {
     <div>
       <h1 className="text-center text-4xl mt-4 mb-8 font-extrabold tracking-tight">
         {chat.name}
+      </h1>
+      <h1 className="text-center text-4xl mt-4 mb-8 font-extrabold tracking-tight">
+        Username: {username}
       </h1>
       {allMessages.map((message) => (
         <p key={message.id}>{message.body}</p>
