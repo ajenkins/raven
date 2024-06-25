@@ -91,31 +91,42 @@ export default function ChatPage() {
         <h1 className="text-xl font-bold">{chat.name}</h1>
       </div>
       <div className="flex-1 overflow-y-auto p-4 mt-16 mb-16">
-        {allMessages.map((message) =>
-          message.sentByName === username ? (
+        {allMessages.map((message) => {
+          const dateStr = new Date(message.sentAt).toLocaleString();
+          if (message.sentByName === username) {
             // Sent by me
-            <div key={message.id} className="mb-4 flex justify-end">
-              <div className="max-w-xs text-left">
-                <div className="text-sm text-gray-600">{username}</div>
-                <div className="bg-blue-500 text-white py-2 px-4 rounded-lg">
-                  <p>{message.body}</p>
+            return (
+              <div key={message.id} className="mb-4 flex justify-end">
+                <div className="max-w-xs md:max-w-md lg:max-w-xl">
+                  <div className="text-sm text-gray-600">{username}</div>
+                  <div className="bg-blue-500 text-white py-2 px-4 rounded-lg">
+                    <p>{message.body}</p>
+                  </div>
+                  <div className="text-xs text-gray-600 text-right">
+                    {dateStr}
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
+            );
+          } else {
             // Sent by someone else
-            <div key={message.id} className="mb-4 flex justify-start">
-              <div className="max-w-xs text-left">
-                <div className="text-sm text-gray-600">
-                  {message.sentByName}
-                </div>
-                <div className="bg-gray-200 py-2 px-4 rounded-lg">
-                  <p>{message.body}</p>
+            return (
+              <div key={message.id} className="mb-4 flex justify-start">
+                <div className="max-w-xs md:max-w-md lg:max-w-xl">
+                  <div className="text-sm text-gray-600">
+                    {message.sentByName}
+                  </div>
+                  <div className="bg-gray-200 py-2 px-4 rounded-lg">
+                    <p>{message.body}</p>
+                  </div>
+                  <div className="text-xs text-gray-600 text-right">
+                    {dateStr}
+                  </div>
                 </div>
               </div>
-            </div>
-          ),
-        )}
+            );
+          }
+        })}
       </div>
       {username ? (
         <Form method="post" ref={formRef}>
