@@ -6,7 +6,6 @@ import { emitter } from "../emitter.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   return eventStream(request.signal, function setup(send) {
     function handle(value: string) {
-      console.log("sending new message");
       send({ event: "message", data: value });
     }
 

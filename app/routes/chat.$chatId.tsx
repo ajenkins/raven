@@ -20,22 +20,32 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
-  invariant(params.chatId, "chatId not found");
   const formData = await request.formData();
-  const body = formData.get("message");
+  const form = formData.get("form");
+  switch (form) {
+    case "message": {
+      const body = formData.get("message");
 
-  if (typeof body !== "string") {
-    return json(
-      { errors: { body: null, title: "Message must be a string" } },
-      { status: 400 },
-    );
+      if (typeof body !== "string") {
+        return json(
+          { errors: { body: null, title: "Message must be a string" } },
+          { status: 400 },
+        );
+      }
+
+      invariant(params.chatId, "chatId not found");
+      const message = await sendMessage({ body, chatId: params.chatId });
+      emitter.emit("message", JSON.stringify(message));
+
+      return json(null, { status: 201 });
+    }
+    case "username": {
+      const username = formData.get("username");
+      console.log(username);
+
+      return json(null, { status: 200 });
+    }
   }
-
-  const message = await sendMessage({ body, chatId: params.chatId });
-  emitter.emit("message", JSON.stringify(message));
-  console.log("MEEEsage:", message);
-
-  return json(null, { status: 201 });
 };
 
 export default function ChatPage() {
@@ -47,6 +57,8 @@ export default function ChatPage() {
   const navigation = useNavigation();
   const isSending = navigation.state === "submitting";
   const formRef = useRef<HTMLFormElement>(null);
+
+  const username = "";
 
   useEffect(() => {
     if (newMessage) {
@@ -69,21 +81,50 @@ export default function ChatPage() {
       {allMessages.map((message) => (
         <p key={message.id}>{message.body}</p>
       ))}
-      <Form method="post" ref={formRef}>
-        <div className="flex fixed items-center bottom-0 w-full p-4">
-          <input
-            name="message"
-            placeholder="Type something..."
-            className="border-black border-2 p-2 flex-1"
-          />
-          <button
-            type="submit"
-            className="flex items-center justify-center rounded-md ml-2 bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
-          >
-            Send
-          </button>
-        </div>
-      </Form>
+      {username ? (
+        <Form method="post" ref={formRef}>
+          <div className="flex fixed items-center bottom-0 w-full p-4">
+            <input
+              name="message"
+              placeholder="Type something..."
+              className="border-black border-2 p-2 flex-1"
+            />
+            <button
+              type="submit"
+              name="form"
+              value="message"
+              className="flex items-center justify-center rounded-md ml-2 bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
+            >
+              Send
+            </button>
+          </div>
+        </Form>
+      ) : (
+        <Form method="put">
+          <div className="fixed bottom-0 left-0 w-full p-4 bg-white border-t border-gray-300 box-border">
+            <label htmlFor="message-input" className="block mb-2 font-bold">
+              Enter a username:
+            </label>
+            <div className="flex items-center">
+              <input
+                name="username"
+                type="text"
+                id="message-input"
+                className="flex-1 p-2 border border-gray-300 rounded"
+                placeholder="Type your name here..."
+              />
+              <button
+                type="submit"
+                name="form"
+                value="username"
+                className="flex items-center justify-center rounded-md ml-2 bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </Form>
+      )}
     </div>
   );
 }
