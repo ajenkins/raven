@@ -1,10 +1,14 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useLoaderData, useNavigation } from "@remix-run/react";
+import { useLoaderData, useNavigation } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { useEventSource } from "remix-utils/sse/react";
 import invariant from "tiny-invariant";
 
+import EditUsername from "~/components/EditUsername";
+import MessageInput from "~/components/MessageInput";
+import MyMessage from "~/components/MyMessage";
+import OtherMessage from "~/components/OtherMessage";
 import { userSettings } from "~/cookies.server";
 import { emitter } from "~/emitter.server";
 import { getChat } from "~/models/chat.server";
@@ -92,88 +96,14 @@ export default function ChatPage() {
       </div>
       <div className="flex-1 overflow-y-auto p-4 mt-16 mb-16">
         {allMessages.map((message) => {
-          const dateStr = new Date(message.sentAt).toLocaleString();
           if (message.sentByName === username) {
-            // Sent by me
-            return (
-              <div key={message.id} className="mb-4 flex justify-end">
-                <div className="max-w-xs md:max-w-md lg:max-w-xl">
-                  <div className="text-sm text-gray-600 pb-1">{username}</div>
-                  <div className="bg-violet-600 text-white py-2 px-4 rounded-lg">
-                    <p>{message.body}</p>
-                  </div>
-                  <div className="text-xs text-gray-600 text-right">
-                    {dateStr}
-                  </div>
-                </div>
-              </div>
-            );
+            return <MyMessage key={message.id} message={message} />;
           } else {
-            // Sent by someone else
-            return (
-              <div key={message.id} className="mb-4 flex justify-start">
-                <div className="max-w-xs md:max-w-md lg:max-w-xl">
-                  <div className="text-sm text-gray-600 pb-1">
-                    {message.sentByName}
-                  </div>
-                  <div className="bg-gray-200 py-2 px-4 rounded-lg">
-                    <p>{message.body}</p>
-                  </div>
-                  <div className="text-xs text-gray-600 text-right">
-                    {dateStr}
-                  </div>
-                </div>
-              </div>
-            );
+            return <OtherMessage key={message.id} message={message} />;
           }
         })}
       </div>
-      {username ? (
-        <Form method="post" ref={formRef}>
-          <div className="fixed bottom-0 left-0 w-full p-4 bg-white border-t border-gray-300 box-border">
-            <div className="flex items-center">
-              <input
-                name="message"
-                placeholder="Type something..."
-                className="border-black border-2 p-2 flex-1"
-              />
-              <button
-                type="submit"
-                name="form"
-                value="message"
-                className="flex items-center justify-center rounded-md ml-2 bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
-              >
-                Send
-              </button>
-            </div>
-          </div>
-        </Form>
-      ) : (
-        <Form method="put">
-          <div className="fixed bottom-0 left-0 w-full p-4 bg-white border-t border-gray-300 box-border">
-            <label htmlFor="message-input" className="block mb-2 font-bold">
-              Enter a username:
-            </label>
-            <div className="flex items-center">
-              <input
-                name="username"
-                type="text"
-                id="message-input"
-                className="flex-1 p-2 border border-gray-300 rounded"
-                placeholder="Type your name here..."
-              />
-              <button
-                type="submit"
-                name="form"
-                value="username"
-                className="flex items-center justify-center rounded-md ml-2 bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </Form>
-      )}
+      {username ? <MessageInput formRef={formRef} /> : <EditUsername />}
     </div>
   );
 }
