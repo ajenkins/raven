@@ -1,9 +1,11 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useLoaderData, useNavigation } from "@remix-run/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useEventSource } from "remix-utils/sse/react";
 import invariant from "tiny-invariant";
 
+import { emitter } from "~/emitter.server";
 import { getChat } from "~/models/chat.server";
 import { sendMessage } from "~/models/message.server";
 
@@ -29,15 +31,29 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     );
   }
 
-  await sendMessage({ body, chatId: params.chatId });
-  return null;
+  const message = await sendMessage({ body, chatId: params.chatId });
+  emitter.emit("message", JSON.stringify(message));
+  console.log("MEEEsage:", message);
+
+  return json(null, { status: 201 });
 };
 
 export default function ChatPage() {
   const { chat } = useLoaderData<typeof loader>();
+  const newMessage = useEventSource("/chat/subscribe", {
+    event: "message",
+  });
+  const [allMessages, setAllMessages] = useState(chat.messages);
   const navigation = useNavigation();
   const isSending = navigation.state === "submitting";
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (newMessage) {
+      const parsedNewMessage = JSON.parse(newMessage);
+      setAllMessages((prev) => [...prev, parsedNewMessage]);
+    }
+  }, [newMessage]);
 
   useEffect(() => {
     if (!isSending) {
@@ -50,7 +66,7 @@ export default function ChatPage() {
       <h1 className="text-center text-4xl mt-4 mb-8 font-extrabold tracking-tight">
         {chat.name}
       </h1>
-      {chat.messages.map((message) => (
+      {allMessages.map((message) => (
         <p key={message.id}>{message.body}</p>
       ))}
       <Form method="post" ref={formRef}>
