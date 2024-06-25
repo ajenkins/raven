@@ -31,8 +31,8 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const cookie = (await userSettings.parse(cookieHeader)) || {};
 
   const formData = await request.formData();
-  const form = formData.get("form");
-  switch (form) {
+  const intent = formData.get("intent");
+  switch (intent) {
     case "message": {
       const body = formData.get("message");
 

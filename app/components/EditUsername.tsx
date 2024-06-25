@@ -17,7 +17,7 @@ export default function EditUsername() {
           />
           <button
             type="submit"
-            name="form"
+            name="intent"
             value="username"
             className="flex items-center justify-center rounded-md ml-2 bg-green-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
           >

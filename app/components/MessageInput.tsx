@@ -10,7 +10,7 @@ export default function MessageInput({ formRef }: MessageInputProps) {
       <Form method="delete">
         <button
           type="submit"
-          name="form"
+          name="intent"
           value="resetUsername"
           className="block mb-2 font-bold text-blue-600 hover:underline"
         >
@@ -26,7 +26,7 @@ export default function MessageInput({ formRef }: MessageInputProps) {
           />
           <button
             type="submit"
-            name="form"
+            name="intent"
             value="message"
             className="flex items-center justify-center rounded-md ml-2 bg-green-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
           >
