@@ -93,21 +93,25 @@ export default function ChatPage() {
       <div className="flex-1 overflow-y-auto p-4 mt-16 mb-16">
         {allMessages.map((message) =>
           message.sentByName === username ? (
-            <div key={message.id} className="message mb-4 flex justify-end">
-              <div className="max-w-xs text-right">
+            // Sent by me
+            <div key={message.id} className="mb-4 flex justify-end">
+              <div className="max-w-xs text-left">
                 <div className="text-sm text-gray-600">{username}</div>
-                <div className="bg-blue-500 text-white p-2 rounded-lg">
+                <div className="bg-blue-500 text-white py-2 px-4 rounded-lg">
                   <p>{message.body}</p>
                 </div>
               </div>
             </div>
           ) : (
-            <div key={message.id} className="message mb-4">
-              <div className="text-sm text-gray-600">
-                {message.sentByName ?? "Placeholder"}
-              </div>
-              <div className="bg-gray-200 p-2 rounded-lg max-w-xs">
-                <p>{message.body}</p>
+            // Sent by someone else
+            <div key={message.id} className="mb-4 flex justify-start">
+              <div className="max-w-xs text-left">
+                <div className="text-sm text-gray-600">
+                  {message.sentByName}
+                </div>
+                <div className="bg-gray-200 py-2 px-4 rounded-lg">
+                  <p>{message.body}</p>
+                </div>
               </div>
             </div>
           ),
