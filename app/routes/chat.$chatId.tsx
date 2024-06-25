@@ -63,6 +63,15 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         },
       });
     }
+    case "resetUsername": {
+      cookie.username = "";
+
+      return redirect(request.url, {
+        headers: {
+          "Set-Cookie": await userSettings.serialize(cookie),
+        },
+      });
+    }
   }
 };
 
