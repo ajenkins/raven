@@ -5,10 +5,8 @@ processes = [ ]
 swap_size_mb = 512
 
 [experimental]
-allowed_public_ports = [ ]
-auto_rollback = true
-cmd = "start.sh"
-entrypoint = "sh"
+cmd = ["start.sh"]
+entrypoint = ["sh"]
 
 [mounts]
 source = "data"
