@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData, useNavigation } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { useEventSource } from "remix-utils/sse/react";
 import invariant from "tiny-invariant";
@@ -58,7 +58,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       });
       emitter.emit("message", JSON.stringify(message));
 
-      return json(null, { status: 201 });
+      return json({ message }, { status: 201 });
     }
     case "username": {
       const username = formData.get("username");
@@ -88,9 +88,7 @@ export default function ChatPage() {
     event: "message",
   });
   const [allMessages, setAllMessages] = useState(chat.messages);
-  const navigation = useNavigation();
-  const isSending = navigation.state === "submitting";
-  const formRef = useRef<HTMLFormElement>(null);
+
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
 
   // Add new messages received from SSE to allMessages
@@ -100,13 +98,6 @@ export default function ChatPage() {
       setAllMessages((prev) => [...prev, parsedNewMessage]);
     }
   }, [newMessage]);
-
-  // Clear message input after submit
-  useEffect(() => {
-    if (!isSending) {
-      formRef.current?.reset();
-    }
-  }, [isSending]);
 
   // Auto-scroll to the last message
   useEffect(() => {
@@ -128,7 +119,7 @@ export default function ChatPage() {
         })}
         <div ref={endOfMessagesRef}></div>
       </div>
-      {username ? <MessageInput formRef={formRef} /> : <EditUsername />}
+      {username ? <MessageInput /> : <EditUsername />}
     </div>
   );
 }

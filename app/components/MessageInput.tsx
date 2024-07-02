@@ -1,11 +1,16 @@
 import { useFetcher } from "@remix-run/react";
+import { useRef, useEffect } from "react";
 
-interface MessageInputProps {
-  formRef: React.RefObject<HTMLFormElement>;
-}
-
-export default function MessageInput({ formRef }: MessageInputProps) {
+export default function MessageInput() {
   const fetcher = useFetcher();
+  const formRef = useRef<HTMLFormElement>(null);
+  const isSubmitted = fetcher.state === "idle" && fetcher.data;
+
+  useEffect(() => {
+    if (isSubmitted) {
+      formRef.current?.reset();
+    }
+  }, [isSubmitted]);
 
   return (
     <div className="flex-none p-4 bg-white border-t border-gray-300">
