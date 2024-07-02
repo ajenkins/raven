@@ -43,6 +43,13 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         );
       }
 
+      if (body.length === 0) {
+        return json(
+          { errors: { body: null, title: "Message cannot be empty" } },
+          { status: 400 },
+        );
+      }
+
       invariant(params.chatId, "chatId not found");
       const message = await sendMessage({
         body,
