@@ -5,7 +5,7 @@ export default function EditUsername() {
 
   return (
     <fetcher.Form method="put">
-      <div className="fixed bottom-0 left-0 w-full p-4 bg-white border-t border-gray-300 box-border">
+      <div className="flex-none p-4 bg-white border-t border-gray-300">
         <label htmlFor="message-input" className="block mb-2 font-bold">
           Enter a username:
         </label>

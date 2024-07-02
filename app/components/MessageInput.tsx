@@ -8,7 +8,7 @@ export default function MessageInput({ formRef }: MessageInputProps) {
   const fetcher = useFetcher();
 
   return (
-    <div className="fixed bottom-0 left-0 w-full p-4 bg-white border-t border-gray-300 box-border">
+    <div className="flex-none p-4 bg-white border-t border-gray-300">
       <fetcher.Form method="delete">
         <button
           type="submit"
