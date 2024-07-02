@@ -1,13 +1,15 @@
-import { Form } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
 
 interface MessageInputProps {
   formRef: React.RefObject<HTMLFormElement>;
 }
 
 export default function MessageInput({ formRef }: MessageInputProps) {
+  const fetcher = useFetcher();
+
   return (
     <div className="fixed bottom-0 left-0 w-full p-4 bg-white border-t border-gray-300 box-border">
-      <Form method="delete">
+      <fetcher.Form method="delete">
         <button
           type="submit"
           name="intent"
@@ -16,8 +18,8 @@ export default function MessageInput({ formRef }: MessageInputProps) {
         >
           Edit Name
         </button>
-      </Form>
-      <Form method="post" ref={formRef}>
+      </fetcher.Form>
+      <fetcher.Form method="post" ref={formRef}>
         <div className="flex items-center">
           <input
             name="message"
@@ -28,12 +30,12 @@ export default function MessageInput({ formRef }: MessageInputProps) {
             type="submit"
             name="intent"
             value="message"
-            className="flex items-center justify-center rounded-md ml-2 bg-green-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
+            className="flex items-center justify-center rounded-md ml-2 bg-green-500 px-4 py-3 font-medium text-white hover:bg-green-600"
           >
             Send
           </button>
         </div>
-      </Form>
+      </fetcher.Form>
     </div>
   );
 }
