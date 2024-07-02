@@ -47,7 +47,7 @@ export default function Index() {
                   <div className="space-y-4 sm:mx-auto">
                     <button
                       type="submit"
-                      className="flex items-center justify-center rounded-md bg-violet-600 px-4 py-3 font-medium text-white hover:bg-yellow-600"
+                      className="flex items-center justify-center rounded-md bg-violet-600 px-4 py-3 font-medium text-white hover:bg-violet-700"
                     >
                       Start A New Chat
                     </button>
