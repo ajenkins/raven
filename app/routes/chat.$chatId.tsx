@@ -119,7 +119,9 @@ export default function ChatPage() {
         })}
         <div ref={endOfMessagesRef}></div>
       </div>
-      {username ? <MessageInput /> : <EditUsername />}
+      <div className="flex-none p-4 bg-white border-t border-gray-300">
+        {username ? <MessageInput /> : <EditUsername />}
+      </div>
     </div>
   );
 }

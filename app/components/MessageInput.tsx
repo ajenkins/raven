@@ -13,7 +13,7 @@ export default function MessageInput() {
   }, [isSubmitted]);
 
   return (
-    <div className="flex-none p-4 bg-white border-t border-gray-300">
+    <>
       <fetcher.Form method="delete">
         <button
           type="submit"
@@ -41,6 +41,6 @@ export default function MessageInput() {
           </button>
         </div>
       </fetcher.Form>
-    </div>
+    </>
   );
 }
