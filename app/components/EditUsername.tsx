@@ -23,7 +23,7 @@ export default function EditUsername() {
           value="username"
           className="flex items-center justify-center rounded-md ml-2 bg-green-500 px-4 py-3 font-medium text-white hover:bg-green-600"
         >
-          Submit
+          Save
         </button>
       </div>
     </fetcher.Form>
