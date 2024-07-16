@@ -105,22 +105,24 @@ export default function ChatPage() {
   }, [allMessages]);
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-none p-4 bg-white border-b border-gray-300">
-        <h1 className="text-xl font-bold">{chat.name}</h1>
-      </div>
-      <div className="flex-1 overflow-y-auto p-4">
-        {allMessages.map((message) => {
-          if (message.sentByName === username) {
-            return <MyMessage key={message.id} message={message} />;
-          } else {
-            return <OtherMessage key={message.id} message={message} />;
-          }
-        })}
-        <div ref={endOfMessagesRef}></div>
-      </div>
-      <div className="flex-none p-4 bg-white border-t border-gray-300">
-        {username ? <MessageInput /> : <EditUsername />}
+    <div className="flex flex-col h-full">
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex-none p-4 bg-white border-b border-gray-300">
+          <h1 className="text-xl font-bold">{chat.name}</h1>
+        </div>
+        <div className="flex-1 overflow-y-auto p-4">
+          {allMessages.map((message) => {
+            if (message.sentByName === username) {
+              return <MyMessage key={message.id} message={message} />;
+            } else {
+              return <OtherMessage key={message.id} message={message} />;
+            }
+          })}
+          <div ref={endOfMessagesRef} />
+        </div>
+        <div className="p-4 border-t border-gray-300">
+          {username ? <MessageInput /> : <EditUsername />}
+        </div>
       </div>
     </div>
   );
