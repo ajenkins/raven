@@ -6,15 +6,16 @@ export default function EditUsername() {
   return (
     <fetcher.Form method="put">
       <label htmlFor="message-input" className="block mb-2 font-bold">
-        Enter a username:
+        Enter a name:
       </label>
       <div className="flex items-center">
         <input
-          name="username"
+          name="name"
           type="text"
           id="message-input"
           className="flex-1 p-2 border border-gray-300 rounded"
           placeholder="Type your name here..."
+          autoComplete="name"
         />
         <button
           type="submit"

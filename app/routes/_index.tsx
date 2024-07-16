@@ -8,7 +8,7 @@ export const meta: MetaFunction = () => [{ title: "Raven" }];
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const name = formData.get("name");
+  const name = formData.get("title");
 
   if (typeof name !== "string") {
     return json(
@@ -36,11 +36,12 @@ export default function Index() {
               </h1>
               <Form method="post">
                 <div className="flex space-y-4 justify-center items-center flex-col">
-                  <label className="">
-                    <div>Chat Name</div>
+                  <label>
+                    <div>Chat Title</div>
                     <input
-                      name="name"
+                      name="title"
                       placeholder="Optional"
+                      autoComplete="off"
                       className="border-black border-2 p-2"
                     />
                   </label>

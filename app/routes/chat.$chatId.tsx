@@ -61,7 +61,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       return json({ message }, { status: 201 });
     }
     case "username": {
-      const username = formData.get("username");
+      const username = formData.get("name");
       cookie.username = username;
 
       return redirect(request.url, {
