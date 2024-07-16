@@ -21,6 +21,7 @@ export default function MessageInput() {
           <button
             type="submit"
             name="intent"
+            value="resetUsername"
             className="block mb-2 font-bold text-blue-600 hover:underline"
           >
             Edit Name
