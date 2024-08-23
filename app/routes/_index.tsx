@@ -28,7 +28,7 @@ export default function Index() {
       <div className="relative sm:pb-16 sm:pt-8">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="bg-white relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
-            <div className="relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32">
+            <div className="relative px-4 pb-8 pt-4 sm:px-6 sm:pb-14 sm:pt-8 lg:px-8 lg:pb-20 lg:pt-12">
               <div className="flex justify-center">
                 <img
                   src="/images/raven-color.svg"
