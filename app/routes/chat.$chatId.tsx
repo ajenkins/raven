@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { useEventSource } from "remix-utils/sse/react";
 import invariant from "tiny-invariant";
@@ -107,7 +107,14 @@ export default function ChatPage() {
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-1 flex-col overflow-hidden">
-        <div className="flex-none p-4 bg-white border-b border-gray-300">
+        <div className="flex items-center p-4 bg-white border-b border-gray-300">
+          <Link to="/">
+            <img
+              src="/images/raven-color.svg"
+              alt="A cartoon raven wearing rave sunglasses"
+              className="w-10 mr-4"
+            />
+          </Link>
           <h1 className="text-xl font-bold">{chat.name}</h1>
         </div>
         <div className="flex-1 overflow-y-auto p-4">
