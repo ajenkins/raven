@@ -29,6 +29,13 @@ export default function Index() {
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="bg-white relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
             <div className="relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32">
+              <div className="flex justify-center">
+                <img
+                  src="/images/raven-color.svg"
+                  alt="A cartoon raven wearing rave sunglasses"
+                  className="w-1/2"
+                />
+              </div>
               <h1 className="text-center text-6xl mb-8 font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
                 <span className="block uppercase text-violet-600 drop-shadow-md">
                   Raven
